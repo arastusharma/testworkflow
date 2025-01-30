@@ -4,16 +4,30 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment'
+        description: 'Choose the environment (dev, stage, prod)'
         required: true
         default: 'dev'
-        type: string
+        type: choice
+        options:
+          - dev
+          - stage
+          - prod
 
 jobs:
-  deploy:
+  deploy-stage:
+    if: github.event.inputs.environment == 'stage'  # Runs only if "stage" is selected
     runs-on: ubuntu-latest
-
+    environment: stage  # Requires approval before running
     steps:
+      - name: Display Environment
+        run: echo "Deploying to the STAGE environment"
 
-    - name: Display Input
-      run: echo "Deploying to the ${{ github.event.inputs.environment }} environment"
+  deploy-prod:
+    if: github.event.inputs.environment == 'prod'  # Runs only if "prod" is selected
+    needs: deploy-stage  # Ensures prod runs only after stage is completed
+    runs-on: ubuntu-latest
+    environment: prod  # Requires approval before running
+    steps:
+      - name: Display Environment
+        run: echo "Deploying to the PROD environment"
+
