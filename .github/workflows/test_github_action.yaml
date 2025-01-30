@@ -1,0 +1,19 @@
+name: test_github_action
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        default: 'dev'
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Display Input
+      run: echo "Deploying to the ${{ github.event.inputs.environment }} environment"
