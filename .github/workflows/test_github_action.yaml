@@ -14,6 +14,13 @@ on:
           - prod
 
 jobs:
+  deploy-dev:
+    if: github.event.inputs.environment == 'dev'  # Runs only if "dev" is selected
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display Environment
+        run: echo "Deploying to the DEV environment"
+
   deploy-stage:
     if: github.event.inputs.environment == 'stage'  # Runs only if "stage" is selected
     runs-on: ubuntu-latest
@@ -30,4 +37,3 @@ jobs:
     steps:
       - name: Display Environment
         run: echo "Deploying to the PROD environment"
-
